@@ -1,42 +1,61 @@
 'use client'
 import { useEffect, useRef } from "react";
-import Chart, { ChartTypeRegistry } from "chart.js/auto";
-import { ChartTypeProps } from "../types/propstypes";
+import Chart from "chart.js/auto";
+import { useRecoilState } from "recoil";
+import { chartType, data } from "../store/atoms/atom";
+import Buttons from "./buttons";
+import Filters from "./filter";
 
 
-export default function ChartCard({ cardtype }: ChartTypeProps) {
+export default function ChartCard() {
+  const chartRef = useRef<Chart | null>(null);
+  const [chartTypee, setChartTypee] = useRecoilState<'line' | 'bar'>(chartType);
+  const [dataa, setData] = useRecoilState(data);
+  useEffect(() => {
+    // const data = {
+    //   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    //   sales: [120, 150, 180, 200, 170, 250, 300],
+    //   expenses: [100, 130, 120, 160, 140, 220, 260],
+    // };
+    let ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    let config = {
+      type: chartTypee,
+      data: {
+        labels: dataa.labels,
+        datasets: [
+          {
+            label: 'Sales',
+            data: dataa.sales
+          },
+          {
+            label: 'Expenses',
+            data: dataa.expenses
+          }
+        ]
+      }
+    }
+    if (chartRef.current) {
+      chartRef.current.destroy();
+    }
+    chartRef.current = new Chart(
+      ctx,
+      config
+    );
+    // clearing to avoid memory leaks and it runs when comp unmounts
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+        chartRef.current = null;
+      }
+    };
 
-    useEffect(()=>{
-        const data = [
-            { year: 2010, count: 10 },
-            { year: 2011, count: 20 },
-            { year: 2012, count: 15 },
-            { year: 2013, count: 25 },
-            { year: 2014, count: 22 },
-            { year: 2015, count: 30 },
-            { year: 2016, count: 28 },
-          ];
-          let ctx = document.getElementById('myChart') as HTMLCanvasElement;
-          var chart = new Chart(
-            ctx,
-            {
-              type: cardtype,
-              data: {
-                labels: data.map(row => row.year),
-                datasets: [
-                  {
-                    label: 'Acquisitions by year',
-                    data: data.map(row => row.count)
-                  }
-                ]
-              }
-            }
-          );
-    },[])
+  }, [chartTypee,dataa]) // everytype the types changes from bar to line or line to bar
 
   return (
     <div>
-      <div style={{width: 625}}>
+      <Filters/>
+      <Buttons/>
+      <div style={{ width: 625 }}>
         <canvas id="myChart"></canvas>
       </div>
     </div>

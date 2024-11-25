@@ -7,8 +7,8 @@
 - [] generate functions
 - [] fetch from backend and display 
 - [x] implement charts (decent)
-- [] add toggle
-- [] add the tooltips ** not clear ** 
-- [] add data range filter
+- [x] add toggle
+- [x] add the tooltips
+- [x] add data range filter
 - [] polish everything 
 
