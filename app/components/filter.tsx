@@ -6,7 +6,7 @@ export default function Filters() {
     const [dataa, setData] = useRecoilState(data);
     return <div className="flex justify-center gap-2 mb-4">
         <button
-            className={`px-4 py-2 border rounded-lg font-bold ${filterTypee === "7" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+            className={`px-4 py-2 border rounded-lg font-bold ${filterTypee === "7" ? "bg-green-800 text-white" : "bg-gray-200"}`}
             onClick={() => {
                 setData({
                     labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -19,7 +19,7 @@ export default function Filters() {
             Last 7 Days
         </button>
         <button
-            className={`px-4 py-2 border rounded-lg font-bold ${filterTypee === "30" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+            className={`px-4 py-2 border rounded-lg font-bold ${filterTypee === "30" ? "bg-green-800 text-white" : "bg-gray-200"}`}
             onClick={() => {
                 setData({
                     labels: Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`),

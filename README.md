@@ -2,7 +2,7 @@
 - [x] Setting up repo
 - [x] Add dependencies
 - [] Decide routes
-- [] a decent functionable navbar just to move
+- [x] a decent functionable navbar just to move
 - [] add the backend 
 - [] generate functions
 - [] fetch from backend and display 
