@@ -1,19 +1,18 @@
 import { useRecoilState } from "recoil";
-import { alldata, filterType } from "../store/atoms/atom";
+import { alldata, alldatashadow, filterType } from "../store/atoms/atom";
+import { filterLastSevenDays } from "../lib/filterdata";
 
 export default function Filters() {
     const [filterTypee, setFilterTypee] = useRecoilState(filterType);
     const [dataa, setData] = useRecoilState(alldata);
+    const [showdata, setShowData] = useRecoilState(alldatashadow);
     return <div className="flex justify-center gap-2 mb-4">
         <button
             className={`px-4 py-2 border rounded-lg font-bold ${filterTypee === "7" ? "bg-green-800 text-white" : "bg-gray-200"}`}
             onClick={() => {
-                setData({
-                    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                    sales: [120, 150, 180, 200, 170, 250, 300],
-                    expenses: [100, 130, 120, 160, 140, 220, 260],
-                  })
-                setFilterTypee('7')
+                const seveldaydata = filterLastSevenDays(dataa);
+                setShowData(seveldaydata);
+                setFilterTypee('7');
             }}
         >
             Last 7 Days
@@ -21,12 +20,8 @@ export default function Filters() {
         <button
             className={`px-4 py-2 border rounded-lg font-bold ${filterTypee === "30" ? "bg-green-800 text-white" : "bg-gray-200"}`}
             onClick={() => {
-                setData({
-                    labels: Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`),
-                    sales: Array.from({ length: 30 }, () => Math.floor(Math.random() * 300) + 100), // Random sales between 100 and 400
-                    expenses: Array.from({ length: 30 }, () => Math.floor(Math.random() * 200) + 50), // Random expenses between 50 and 250
-                  })
-                  setFilterTypee('30')
+                setShowData(dataa);
+                setFilterTypee('30');
             }}
         >
             Last 30 Days

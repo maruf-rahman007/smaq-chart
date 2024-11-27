@@ -2,24 +2,31 @@
 import { useQuery } from "react-query";
 import axios from "axios";
 import ChartCard from "../components/chart";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useRecoilState } from "recoil";
+import { alldata, alldatashadow } from "../store/atoms/atom";
+import { filterLastSevenDays } from "../lib/filterdata";
+import { fetchData } from "../lib/fetch";
 
 export default function Analytics() {
+    const [dataa, setData] = useRecoilState(alldata);
+    const [showdata, setShowData] = useRecoilState(alldatashadow);
+    const { data, error, isLoading } = useQuery('fetchData', fetchData);
+    useEffect(() => {
+        if (data && data.data) {
+            setData(data.data);
+            const sevendaydata = filterLastSevenDays(data.data);
+            setShowData(sevendaydata);//By default seven day data will show 
+        }
+    }, [data]);
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return error;
 
-    const fetchData = async () => {
-        const response = await axios.get('/api/v1/data');  // call the Next.js API route
-        return response.data;
-      };
-      const { data, error, isLoading } = useQuery('fetchData', fetchData);
-
-      if (isLoading) return <div>Loading...</div>;
-      if (error) return error
-      console.log(data);
-  return (
-    <main>
-      <div className="flex flex-row justify-center mt-20">
-        <ChartCard />
-      </div>
-    </main>
-  );
+    return (
+        <main>
+            <div className="flex flex-row justify-center mt-20">
+                <ChartCard />
+            </div>
+        </main>
+    );
 }

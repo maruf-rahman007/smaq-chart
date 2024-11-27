@@ -16,7 +16,9 @@ export default function Home() {
           <span className="text-center text-[4rem] font-semibold">with <span className="text-center text-[4rem] font-bold text-green-800">AI Dashboards</span></span>
           <span className="text-center text-[4rem] font-bold text-green-800">and Reports</span>
         </div>
-        <p className="text-2xl">Embed <span className="font-bold">customer-facing analytics</span> in your product <br /> and empower your users to <span className="font-bold">make better decisions.</span></p>
+        <div className="flex text-center">
+          <p className="text-2xl p-2">Embed <span className="font-bold">customer-facing analytics</span> in your product <br /> and empower your users to <span className="font-bold">make better decisions.</span></p>
+        </div>
       </div>
       <div className="flex justify-center mt-10">
         <button className="border rounded-md py-2 px-5 text-white bg-green-800 hover:bg-green-400 font-bold text-lg">

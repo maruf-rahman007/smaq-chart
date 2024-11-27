@@ -3,81 +3,83 @@ import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { useRecoilState } from "recoil";
-import { chartType, alldata } from "../store/atoms/atom";
+import { chartType, alldata, alldatashadow } from "../store/atoms/atom";
 import Buttons from "./buttons";
 import Filters from "./filter";
 Chart.register(zoomPlugin);
 
 export default function ChartCard() {
-  // fot getting the referance of canvas
   const chartRef = useRef<Chart | null>(null);
+  const chartContainerRef = useRef<HTMLCanvasElement | null>(null);
   const [chartTypee, setChartTypee] = useRecoilState<'line' | 'bar'>(chartType);
   const [dataa, setData] = useRecoilState(alldata);
-  
+  const [showdata, setShowData] = useRecoilState(alldatashadow);
+
   useEffect(() => {
-    // const data = {
-    //   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    //   sales: [120, 150, 180, 200, 170, 250, 300],
-    //   expenses: [100, 130, 120, 160, 140, 220, 260],
-    // };
-    let ctx = document.getElementById('myChart') as HTMLCanvasElement;
-    let config = {
-      type: chartTypee,
-      data: {
-        labels: dataa.labels,
-        datasets: [
-          {
-            label: 'Sales',
-            data: dataa.sales
-          },
-          {
-            label: 'Expenses',
-            data: dataa.expenses
-          }
-        ]
-      },
-      //all the zooming and panning config
-      options: {
-        plugins: {
-          zoom: {
-            pan: {
-              enabled: chartTypee == 'line', // should only work on line graph
-            },
-            zoom: {
-              wheel: {
-                enabled: chartTypee == 'line',
+    if (chartContainerRef.current && typeof window !== "undefined") {
+      const ctx = chartContainerRef.current.getContext("2d");
+
+      if (ctx) {  // Ensure ctx is not null
+        let config = {
+          type: chartTypee,
+          data: {
+            labels: showdata.labels,
+            datasets: [
+              {
+                label: 'Sales',
+                data: showdata.sales
               },
-              pinch: {
-                enabled: chartTypee == 'line'
+              {
+                label: 'Expenses',
+                data: showdata.expenses
+              }
+            ]
+          },
+          options: {
+            plugins: {
+              zoom: {
+                pan: {
+                  enabled: chartTypee === 'line', // Should only work on line graph
+                },
+                zoom: {
+                  wheel: {
+                    enabled: chartTypee === 'line',
+                  },
+                  pinch: {
+                    enabled: chartTypee === 'line'
+                  }
+                }
               }
             }
           }
-        }
-      }
-    }
-    if (chartRef.current) {
-      chartRef.current.destroy();
-    }
-    chartRef.current = new Chart(
-      ctx,
-      config
-    );
-    // clearing to avoid memory leaks and it runs when comp unmounts
-    return () => {
-      if (chartRef.current) {
-        chartRef.current.destroy();
-        chartRef.current = null;
-      }
-    };
+        };
 
-  }, [chartTypee,dataa]) // everytype the types changes from bar to line or line to bar
+        // Destroy the previous chart instance if it exists
+        if (chartRef.current) {
+          chartRef.current.destroy();
+        }
+
+        chartRef.current = new Chart(ctx, config);
+
+        // Cleanup on component unmount
+        return () => {
+          if (chartRef.current) {
+            chartRef.current.destroy();
+            chartRef.current = null;
+          }
+        };
+      } else {
+        console.error('Canvas context is null');
+      }
+    }
+  }, [chartTypee, dataa, showdata]);
 
   return (
     <div>
-      <Filters/>
-      <Buttons/>
-      <div style={{ width: 625 }}>
-        <canvas id="myChart"></canvas>
+      <Filters />
+      <Buttons />
+      <div className="mt-4 w-[400px] h-[1000px] md:w-[500px] lg:w-[625px] pr-6">
+        <canvas ref={chartContainerRef}></canvas>
       </div>
     </div>
   );

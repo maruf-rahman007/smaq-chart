@@ -17,7 +17,7 @@ export default function Buttons() {
         <button
             className={`flex items-center gap-2 px-4 py-2 border rounded-lg font-bold ${chartTypee === "bar" ? "bg-green-800 text-white" : "bg-gray-200"}`}
             onClick={() => {
-                setChartTypee('bar')
+                setChartTypee('bar');
             }}
         >
             <img src="/graph-bar.png" alt="Bar Chart" className="h-4 w-4" />
