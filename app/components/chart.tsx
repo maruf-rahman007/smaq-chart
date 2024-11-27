@@ -1,11 +1,12 @@
 'use client'
 import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
+import zoomPlugin from 'chartjs-plugin-zoom';
 import { useRecoilState } from "recoil";
 import { chartType, data } from "../store/atoms/atom";
 import Buttons from "./buttons";
 import Filters from "./filter";
-
+Chart.register(zoomPlugin);
 
 export default function ChartCard() {
   const chartRef = useRef<Chart | null>(null);
@@ -32,6 +33,24 @@ export default function ChartCard() {
             data: dataa.expenses
           }
         ]
+      },
+      //all the zooming and panning config
+      options: {
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: chartTypee == 'line', // should only work on line graph
+            },
+            zoom: {
+              wheel: {
+                enabled: chartTypee == 'line',
+              },
+              pinch: {
+                enabled: chartTypee == 'line'
+              }
+            }
+          }
+        }
       }
     }
     if (chartRef.current) {
