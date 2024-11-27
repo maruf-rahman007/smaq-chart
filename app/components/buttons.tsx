@@ -1,3 +1,4 @@
+'use client'
 import { useRecoilState } from "recoil";
 import { chartType } from "../store/atoms/atom";
 
