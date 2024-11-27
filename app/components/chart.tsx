@@ -3,15 +3,17 @@ import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { useRecoilState } from "recoil";
-import { chartType, data } from "../store/atoms/atom";
+import { chartType, alldata } from "../store/atoms/atom";
 import Buttons from "./buttons";
 import Filters from "./filter";
 Chart.register(zoomPlugin);
 
 export default function ChartCard() {
+  // fot getting the referance of canvas
   const chartRef = useRef<Chart | null>(null);
   const [chartTypee, setChartTypee] = useRecoilState<'line' | 'bar'>(chartType);
-  const [dataa, setData] = useRecoilState(data);
+  const [dataa, setData] = useRecoilState(alldata);
+  
   useEffect(() => {
     // const data = {
     //   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

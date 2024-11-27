@@ -1,9 +1,9 @@
 import { useRecoilState } from "recoil";
-import { data, filterType } from "../store/atoms/atom";
+import { alldata, filterType } from "../store/atoms/atom";
 
 export default function Filters() {
     const [filterTypee, setFilterTypee] = useRecoilState(filterType);
-    const [dataa, setData] = useRecoilState(data);
+    const [dataa, setData] = useRecoilState(alldata);
     return <div className="flex justify-center gap-2 mb-4">
         <button
             className={`px-4 py-2 border rounded-lg font-bold ${filterTypee === "7" ? "bg-green-800 text-white" : "bg-gray-200"}`}

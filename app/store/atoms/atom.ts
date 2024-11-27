@@ -6,8 +6,8 @@ export const chartType = atom<'line' | 'bar'>({
   default: 'line',
 });
 
-export const data = atom({
-    key: 'data',
+export const alldata = atom({
+    key: 'alldata',
     default: {
         labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
         sales: [120, 150, 180, 200, 170, 250, 300],

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import RecoilContextProvider from "./lib/RecoilContextProvider";
+import { Query } from "react-query";
+import ClientQueryProvider from "./lib/Queryprovider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,9 +31,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <RecoilContextProvider>
-        {children}
-      </RecoilContextProvider>
+        <ClientQueryProvider>
+          <RecoilContextProvider>
+            {children}
+          </RecoilContextProvider>
+        </ClientQueryProvider>
       </body>
     </html>
   );
