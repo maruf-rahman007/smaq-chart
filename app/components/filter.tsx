@@ -1,4 +1,3 @@
-'use client'
 import { useRecoilState } from "recoil";
 import { alldata, alldatashadow, filterType } from "../store/atoms/atom";
 import { filterLastSevenDays } from "../lib/filterdata";
